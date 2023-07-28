@@ -17,20 +17,13 @@ function guardar() {
         alert("La tarea ya existe")
         return false;
     }
-    container.appendChild(createTable(container));
+    createTable(container);
     alertEmpty();
 }
 function createTable(container){
-    let table=container.querySelector('table');
-    if (table===null) {
-        table = document.createElement('table');
-        table.classList='table'
-    }
-    const tbody = document.createElement('tbody');
     const tr = document.createElement('tr');
-    const taskColumn = document.createElement('td');
-    //
     const checkTd=document.createElement('td');
+    const taskColumn = document.createElement('td');
     const deleteTd=document.createElement('td');
     //
     taskColumn.classList='parrafo'
@@ -42,10 +35,20 @@ function createTable(container){
     tr.appendChild(checkTd);
     tr.appendChild(taskColumn);
     tr.appendChild(deleteTd);
-    tbody.appendChild(tr)
-    //here 16:01
-    table.appendChild(tbody);
-    return table;
+    //
+    let tbody=container.querySelector('tbody');
+    let table = container.querySelector('table');
+    if (tbody===null && table===null) {
+        tbody=document.createElement('tbody')
+        table=document.createElement('table')
+        table.classList='table'
+        tbody.appendChild(tr)
+        table.appendChild(tbody)
+        container.appendChild(table)
+        console.log(table);
+    }else{
+        tbody.appendChild(tr)
+    }
 }
 function check() {
     const check = document.createElement('input')
@@ -63,9 +66,12 @@ function eliminar() {
     img.src="../img/borrar.png";
     img.className="imgDelete";
     deletebtn.appendChild(img);
-    deletebtn.className = 'btn-delete'
+    deletebtn.className = 'btn-delete';
+    
     deletebtn.addEventListener('click', (e) => {
+        console.log(e.target.closest('tr'));
         e.target.closest('tr').remove()
+        console.log();
         actualizarContador()
         alertEmpty()
     })
